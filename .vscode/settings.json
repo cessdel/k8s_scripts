@@ -1,0 +1,5 @@
+{
+    "yaml.schemas": {
+        "kubernetes://schema/v1@pod": "file:///c%3A/Users/cesar/OneDrive/Escritorio/kubernetes/01-pod.yaml"
+    }
+}

@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-app-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: flask-app
+  template:
+    metadata:
+      labels:
+        app: flask-app
+    spec:
+      containers:
+      - name: flask-app
+        image: cessdel/python_api_flask:1.1
+        ports:
+        - containerPort: 3000
+        volumeMounts:
+        - name: flask-data-volume
+          mountPath: /app/data  # Ruta en la que se montará el volumen
+      volumes:
+      - name: flask-data-volume
+        persistentVolumeClaim:
+          claimName: flask-data-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flask-app-service
+spec:
+  selector:
+    app: flask-app
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3000
+    nodePort: 30000
+  type: NodePort
+   # Cambiado a NodePort para exponer en Minikube
